@@ -37,22 +37,6 @@ class TextNode:
             return LeafNode("img", "", props={"src": text_node.url, "alt": text_node.text})
         else:
             raise Exception(f"Unknown text type: {text_node.text_type}")
-        
-    
-    def split_nodes_delimiter(old_nodes, delimiter, text_type):
-        text_nodes_list = []
-        for node in old_nodes:
-            if node.text_type != "text":
-                text_nodes_list.append(TextNode(node, node.text_type))
-                continue
-            elif node.text_type == "text":
-                temp_split = node.text.split(delimiter)
-                for split_text in temp_split:
-                    if temp_split.index(split_text) % 2 == 0:
-                        text_nodes_list.append(TextNode(split_text, node.text_type))
-                    else:
-                        text_nodes_list.append(TextNode(split_text, text_type))
-        return text_nodes_list
     
     def __repr__(self):
         return f"TextNode({self.text}, {self.text_type}, {self.url})"

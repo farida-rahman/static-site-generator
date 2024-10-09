@@ -30,18 +30,5 @@ class TestTextToHTML(unittest.TestCase):
         node = TextNode("trying to see what this returns", "bold").text_node_to_html()
         self.assertEqual(node.to_html(), '<b>trying to see what this returns</b>')
 
-class TestSplitDelimiters(unittest.TestCase):
-    def test_code_split(self):
-        node = TextNode("This is text with a `code block` word", "text")
-        new_nodes = TextNode.split_nodes_delimiter([node], "`", "code")
-        result = [
-            TextNode("This is text with a ", "text"),
-            TextNode("code block", "code"),
-            TextNode(" word", "text")
-            ]
-        self.assertEqual(new_nodes, result)
-
-
-
 if __name__ == "__main__":
     unittest.main()
