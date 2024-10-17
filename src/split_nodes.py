@@ -2,19 +2,19 @@ from textnode import *
 from extract_markdown import *
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
-        text_nodes_list = []
-        for node in old_nodes:
-            if node.text_type != "text":  #already in it's final form
-                text_nodes_list.append(TextNode(node, node.text_type))
-                continue
-            elif node.text_type == "text":
-                temp_split = node.text.split(delimiter)
-                for split_text in temp_split:
-                    if temp_split.index(split_text) % 2 == 0:
-                        text_nodes_list.append(TextNode(split_text, node.text_type))
-                    else:
-                        text_nodes_list.append(TextNode(split_text, text_type))
-        return text_nodes_list
+    text_nodes_list = []
+    for node in old_nodes:
+        if node.text_type != "text":  #already in it's final form
+            text_nodes_list.append(node)
+            continue
+        elif node.text_type == "text":
+            temp_split = node.text.split(delimiter)
+            for split_text in temp_split:
+                if temp_split.index(split_text) % 2 == 0:
+                    text_nodes_list.append(TextNode(split_text, node.text_type))
+                else:
+                    text_nodes_list.append(TextNode(split_text, text_type))
+    return text_nodes_list
 
 def split_nodes_link(old_nodes):
     new_nodes = []
@@ -66,3 +66,12 @@ def split_nodes_image(old_nodes):
             if remaining_text:
                 new_nodes.append(TextNode(remaining_text, node.text_type))
     return new_nodes
+
+def text_to_textnodes(text):
+    split_1 = split_nodes_delimiter(text, "**", text_type_bold)
+    split_2 = split_nodes_delimiter(split_1, "*", text_type_italic)
+    split_3 = split_nodes_delimiter(split_2, "`", text_type_code)
+    split_images = split_nodes_image(split_3)
+    split_links = split_nodes_link(split_images)
+    print(split_links)
+    return split_links
